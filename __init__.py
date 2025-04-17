@@ -9,9 +9,9 @@ from urllib.request import urlopen
                                                                                                                                      
 app = Flask(__name__)  
 
-@app.route("/contact/")
-def MaPremiereAPI():
-    return "<h2>Ma page de contact</h2>"
+@app.route('/contact/')
+def contact():
+    return render_template("contact.html")
 
 @app.route('/tawarano/')
 def meteo():
@@ -54,10 +54,6 @@ def histogramme():
             temp_celsius = temp_kelvin - 273.15
             results.append({'Jour': dt_value, 'temp': round(temp_celsius, 2)})
     return render_template("histogramme.html", meteo=results)
-
-@app.route('/contact/')
-def contact():
-    return render_template("contact.html")
                                                                                                                                       
 @app.route('/')
 def hello_world():
