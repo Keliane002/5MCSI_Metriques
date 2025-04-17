@@ -28,7 +28,7 @@ def meteo():
     return jsonify(results=results)
 
 @app.route('/tawarano_html/')
-def meteo_html():
+def mongraphique():
     response = urlopen('https://samples.openweathermap.org/data/2.5/forecast?lat=0&lon=0&appid=xxx')
     raw_content = response.read()
     json_content = json.loads(raw_content.decode('utf-8'))
