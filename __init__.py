@@ -40,7 +40,6 @@ def mongraphique():
             temp_celsius = temp_kelvin - 273.15
             results.append({'Jour': dt_value, 'temp': round(temp_celsius, 2)})
     return render_template("graphique.html", meteo=results)
-
                                                                                                                                       
 @app.route('/')
 def hello_world():
