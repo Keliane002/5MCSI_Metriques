@@ -27,7 +27,7 @@ def meteo():
             results.append({'Jour': dt_value, 'temp': round(temp_celsius, 2)})
     return jsonify(results=results)
 
-@app.route('/tawarano_html/')
+@app.route('/rapport/')
 def mongraphique():
     response = urlopen('https://samples.openweathermap.org/data/2.5/forecast?lat=0&lon=0&appid=xxx')
     raw_content = response.read()
@@ -41,7 +41,7 @@ def mongraphique():
             results.append({'Jour': dt_value, 'temp': round(temp_celsius, 2)})
     return render_template("graphique.html", meteo=results)
 
-@app.route('/rapport/')
+@app.route('/histogramme/')
 def histogramme():
     response = urlopen('https://samples.openweathermap.org/data/2.5/forecast?lat=0&lon=0&appid=xxx')
     raw_content = response.read()
