@@ -31,6 +31,7 @@ def meteo():
 def mongraphique():
     response = urlopen('https://samples.openweathermap.org/data/2.5/forecast?lat=0&lon=0&appid=xxx')
     raw_content = response.read()
+
              results.append({'Jour': dt_value, 'temp': round(temp_celsius, 2)})
     return render_template("graphique.html", meteo=results)
 
