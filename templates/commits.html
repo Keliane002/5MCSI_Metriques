@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Statistiques de Commits</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 2rem;
+        }
+        nav a {
+            margin-right: 1rem;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            margin-top: 2rem;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="/">Accueil</a>
+        <a href="/contact/">Contact</a>
+        <a href="/rapport/">Graphique</a>
+        <a href="/histogramme/">Histogramme</a>
+        <a href="/commits/">Commits</a>
+    </nav>
+
+    <h1>Nombre de commits par minute</h1>
+
+    {% if commits %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Minute (HH:MM)</th>
+                    <th>Nombre de commits</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for minute, count in commits %}
+                <tr>
+                    <td>{{ minute }}</td>
+                    <td>{{ count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucun commit trouvé ou erreur lors de l'appel à l'API GitHub.</p>
+    {% endif %}
+
+</body>
+</html>
