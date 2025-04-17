@@ -1,35 +1,43 @@
-<!doctype html>
-<html lang="fr">
+<html>
   <head>
-    <meta charset="utf-8">
-    <title>Météo de Tawarano</title>
-    <style>
-      table {
-        border-collapse: collapse;
-        width: 60%;
-        margin: auto;
-      }
-      th, td {
-        padding: 10px;
-        border: 1px solid #ccc;
-        text-align: center;
-      }
-      h1 {
-        text-align: center;
-      }
-    </style>
+    <meta charset="UTF-8" />
+    <title>Metrique</title>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   </head>
   <body>
-    <h1>Météo de Tawarano</h1>
-    <table>
-      <tr>
-        <th>Date</th>
-        <th>Température (°C)</th>
-      </tr>
-      {% for item in meteo %}
-      <tr>
-        <td>{{ item.Jour }}</td>
-        <td>{{ item.temp }}</td>
+    <div id="chart_div"></div>
+    <script>
+      google.charts.load('current', { packages: ['corechart'] });
+      google.charts.setOnLoadCallback(drawBackgroundColor);
+     function drawBackgroundColor() {
+    function drawChart(data) {
+    // Convertir les données récupérées en un tableau utilisable par Google Charts
+    var dataTable = new google.visualization.DataTable();
+    dataTable.addColumn('string', 'Date');
+    dataTable.addColumn('number', 'Valeur');
+    data.results.forEach(entry => {
+      var date = new Date(entry.Jour * 1000);
+      dataTable.addRow([date.toLocaleDateString(), entry.temp]);
+    });
+    // Configurer les options du graphique en ligne
+    var options = {
+      title: 'Évolution des températures de la ville de Tawarano',
+      curveType: 'function',
+      legend: { position: 'bottom' }
+    };
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(dataTable, options);
+  }
+  // Récupération de données depuis notre API /tawarano/
+  fetch('/tawarano/')
+    .then(response => response.json())
+    .then(data => {
+      drawChart(data);
+    })
+}
+    </script>
+  </body>
+</html>
       </tr>
       {% endfor %}
     </table>
