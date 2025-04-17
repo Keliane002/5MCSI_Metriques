@@ -6,6 +6,9 @@ from urllib.request import urlopen
 import sqlite3
 from flask import Flask, jsonify
 from urllib.request import urlopen
+import requests
+from collections import Counter
+from datetime import datetime
                                                                                                                                      
 app = Flask(__name__)  
 
@@ -58,6 +61,29 @@ def histogramme():
 @app.route('/')
 def hello_world():
     return render_template('hello.html') #(COMMENTAIRE)
+
+@app.route('/commits/')
+def commits():
+    url = 'https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits'
+    response = requests.get(url)
+    
+    if response.status_code != 200:
+        return "Erreur lors de l'appel à l'API GitHub"
+
+    data = response.json()
+    minutes_list = []
+
+    for commit in data:
+        date_str = commit['commit']['author']['date']
+        date_obj = datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%SZ')
+        minutes_list.append(date_obj.minute)
+
+    # Compter le nombre de commits par minute
+    count = Counter(minutes_list)
+    minutes = list(count.keys())
+    commit_counts = list(count.values())
+
+    return render_template('commits.html', minutes=minutes, commit_counts=commit_counts)
   
 if __name__ == "__main__":
   app.run(debug=True)
