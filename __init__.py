@@ -40,6 +40,20 @@ def mongraphique():
             temp_celsius = temp_kelvin - 273.15
             results.append({'Jour': dt_value, 'temp': round(temp_celsius, 2)})
     return render_template("graphique.html", meteo=results)
+
+@app.route('/histogramme/')
+def histogramme():
+    response = urlopen('https://samples.openweathermap.org/data/2.5/forecast?lat=0&lon=0&appid=xxx')
+    raw_content = response.read()
+    json_content = json.loads(raw_content.decode('utf-8'))
+    results = []
+    for list_element in json_content.get('list', []):
+        dt_value = list_element.get('dt_txt', '')[:16]  # Affiche la date+heure
+        temp_kelvin = list_element.get('main', {}).get('temp')
+        if temp_kelvin is not None:
+            temp_celsius = temp_kelvin - 273.15
+            results.append({'Jour': dt_value, 'temp': round(temp_celsius, 2)})
+    return render_template("histogramme.html", meteo=results)
                                                                                                                                       
 @app.route('/')
 def hello_world():
