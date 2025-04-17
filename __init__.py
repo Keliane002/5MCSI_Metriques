@@ -3,6 +3,7 @@ import json
 from datetime import datetime
 from urllib.request import Request, urlopen
 from collections import Counter
+import urllib.request
 
 app = Flask(__name__)
 
