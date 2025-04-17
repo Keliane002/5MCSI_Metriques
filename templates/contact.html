@@ -8,34 +8,44 @@
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(135deg, #89f7fe, #66a6ff);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
       margin: 0;
-      flex-direction: column;
+      padding: 0;
     }
 
     nav {
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
-      background-color: #1A1A1A;  /* Fond sombre pour la navigation */
-      padding: 1.5em;
+      background-color: #1A1A1A;
+      padding: 1em 0;
       display: flex;
       justify-content: center;
-      gap: 3em;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      gap: 2em;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      z-index: 1000;
     }
 
     nav a {
       color: white;
       text-decoration: none;
-      font-weight: bold;
-      text-transform: uppercase;
-      font-size: 1.2em;
+      font-weight: 500;
+      font-size: 0.95em;
+      letter-spacing: 0.5px;
+      transition: color 0.3s;
     }
 
     nav a:hover {
       color: #66a6ff;
+    }
+
+    .page-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 120px; /* Espace pour la nav */
+      min-height: 100vh;
+      box-sizing: border-box;
     }
 
     .form-container {
@@ -45,13 +55,13 @@
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
       width: 400px;
       max-width: 90%;
-      margin-top: 50px;
     }
 
     .form-container h2 {
       margin-bottom: 20px;
       text-align: center;
       color: #333;
+      font-size: 1.4em;
     }
 
     .form-group {
@@ -62,14 +72,16 @@
       display: block;
       margin-bottom: 5px;
       color: #555;
+      font-size: 0.95em;
     }
 
-    .form-group input, .form-group textarea {
+    .form-group input,
+    .form-group textarea {
       width: 100%;
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 8px;
-      font-size: 16px;
+      font-size: 0.95em;
     }
 
     .form-group textarea {
@@ -84,7 +96,7 @@
       border: none;
       padding: 12px;
       border-radius: 8px;
-      font-size: 16px;
+      font-size: 0.95em;
       cursor: pointer;
       transition: background-color 0.3s;
     }
@@ -96,35 +108,42 @@
 </head>
 <body>
 
-  <!-- Navigation -->
+  <!-- Barre de navigation -->
   <nav>
+    <a href="/">Accueil</a>
     <a href="/contact/">Contact</a>
     <a href="/rapport/">Graphique</a>
     <a href="/histogramme/">Histogramme</a>
     <a href="/commits/">Commits</a>
   </nav>
 
-  <!-- Formulaire de contact -->
-  <div class="form-container">
-    <h2>Contactez-nous</h2>
-    <form>
-      <div class="form-group">
-        <label for="nom">Nom :</label>
-        <input type="text" id="nom" name="nom" placeholder="Votre nom">
-      </div>
-      <div class="form-group">
-        <label for="prenom">Prénom :</label>
-        <input type="text" id="prenom" name="prenom" placeholder="Votre prénom">
-      </div>
-      <div class="form-group">
-        <label for="message">Message :</label>
-        <textarea id="message" name="message" placeholder="Votre message..."></textarea>
-      </div>
-      <div class="form-group">
-        <button type="submit">Envoyer</button>
-      </div>
-    </form>
+  <!-- Contenu principal -->
+  <div class="page-content">
+    <div class="form-container">
+      <h2>Contactez-nous</h2>
+      <form>
+        <div class="form-group">
+          <label for="nom">Nom :</label>
+          <input type="text" id="nom" name="nom" placeholder="Votre nom">
+        </div>
+        <div class="form-group">
+          <label for="prenom">Prénom :</label>
+          <input type="text" id="prenom" name="prenom" placeholder="Votre prénom">
+        </div>
+        <div class="form-group">
+          <label for="message">Message :</label>
+          <textarea id="message" name="message" placeholder="Votre message..."></textarea>
+        </div>
+        <div class="form-group">
+          <button type="submit">Envoyer</button>
+        </div>
+      </form>
+    </div>
   </div>
+
+</body>
+</html>
+
 
 </body>
 </html>
