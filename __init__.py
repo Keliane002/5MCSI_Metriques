@@ -39,7 +39,7 @@ def meteo_html():
         if temp_kelvin is not None:
             temp_celsius = temp_kelvin - 273.15
             results.append({'Jour': dt_value, 'temp': round(temp_celsius, 2)})
-    return render_template("meteo.html", meteo=results)
+    return render_template("graphique.html", meteo=results)
 
                                                                                                                                       
 @app.route('/')
