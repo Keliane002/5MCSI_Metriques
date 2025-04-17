@@ -1,66 +1,112 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <title>Statistiques de Commits</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 2rem;
-        }
-        nav a {
-            margin-right: 1rem;
-        }
-        h1 {
-            color: #333;
-        }
-        table {
-            margin-top: 2rem;
-            width: 100%;
-            border-collapse: collapse;
-        }
-        th, td {
-            padding: 0.5rem;
-            border: 1px solid #ccc;
-            text-align: left;
-        }
-        th {
-            background-color: #eee;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Statistiques de Commits</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ['Minute', 'Commits'],
+        {% for minute, count in commits %}
+          ['{{ minute }}', {{ count }}],
+        {% endfor %}
+      ]);
+
+      var options = {
+        title: 'Nombre de commits par minute',
+        curveType: 'function',
+        legend: { position: 'bottom' },
+        backgroundColor: 'transparent',
+        hAxis: { title: 'Minute (HH:MM)' },
+        vAxis: { title: 'Commits' }
+      };
+
+      var chart = new google.visualization.LineChart(document.getElementById('commits_chart'));
+      chart.draw(data, options);
+    }
+  </script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #89f7fe, #66a6ff);
+    }
+
+    nav {
+      background-color: #1e1e2f;
+      padding: 10px 0;
+      text-align: center;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      z-index: 10;
+    }
+
+    nav a {
+      color: #fff;
+      margin: 0 20px;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #66a6ff;
+    }
+
+    .content {
+      margin-top: 80px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 80vh;
+    }
+
+    .chart-container {
+      background-color: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 1000px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+    }
+
+    p {
+      text-align: center;
+      color: #fff;
+    }
+  </style>
 </head>
 <body>
+  <nav>
+    <a href="/">Accueil</a>
+    <a href="/contact/">Contact</a>
+    <a href="/rapport/">Graphique</a>
+    <a href="/histogramme/">Histogramme</a>
+    <a href="/commits/">Commits</a>
+  </nav>
 
-    <nav>
-        <a href="/">Accueil</a>
-        <a href="/contact/">Contact</a>
-        <a href="/rapport/">Graphique</a>
-        <a href="/histogramme/">Histogramme</a>
-        <a href="/commits/">Commits</a>
-    </nav>
-
-    <h1>Nombre de commits par minute</h1>
-
-    {% if commits %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Minute (HH:MM)</th>
-                    <th>Nombre de commits</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for minute, count in commits %}
-                <tr>
-                    <td>{{ minute }}</td>
-                    <td>{{ count }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
+  <div class="content">
+    <div class="chart-container">
+      <h1>Nombre de commits par minute</h1>
+      {% if commits %}
+        <div id="commits_chart" style="width: 100%; height: 500px;"></div>
+      {% else %}
         <p>Aucun commit trouvé ou erreur lors de l'appel à l'API GitHub.</p>
-    {% endif %}
-
+      {% endif %}
+    </div>
+  </div>
 </body>
 </html>
