@@ -2,11 +2,11 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Statistiques de Commits</title>
+  <title>Commits GitHub</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript">
-    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.load('current', {'packages':['corechart']});
     google.charts.setOnLoadCallback(drawChart);
 
     function drawChart() {
@@ -18,14 +18,18 @@
       ]);
 
       var options = {
-        curveType: 'function',
-        legend: { position: 'bottom' },
-        backgroundColor: 'transparent',
-        hAxis: { title: 'Minute (HH:MM)' },
-        vAxis: { title: 'Commits' }
+        title: 'Nombre de commits par minute',
+        legend: { position: 'none' },
+        hAxis: {
+          title: 'Minute (HH:MM)'
+        },
+        vAxis: {
+          title: 'Nombre de commits'
+        },
+        backgroundColor: 'transparent'
       };
 
-      var chart = new google.visualization.LineChart(document.getElementById('commits_chart'));
+      var chart = new google.visualization.ColumnChart(document.getElementById('commit_chart'));
       chart.draw(data, options);
     }
   </script>
@@ -43,14 +47,14 @@
       position: fixed;
       top: 0;
       width: 100%;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-      z-index: 10;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
     }
 
     nav a {
-      color: #fff;
-      margin: 0 20px;
+      color: white;
       text-decoration: none;
+      margin: 0 20px;
       font-size: 14px;
       transition: color 0.3s;
     }
@@ -59,7 +63,7 @@
       color: #66a6ff;
     }
 
-    .content {
+    .container {
       margin-top: 80px;
       display: flex;
       justify-content: center;
@@ -67,7 +71,7 @@
       min-height: 80vh;
     }
 
-    .chart-container {
+    .card {
       background-color: white;
       padding: 40px;
       border-radius: 15px;
@@ -76,11 +80,16 @@
       max-width: 1000px;
     }
 
-    .chart-container h1 {
+    .card h2 {
       text-align: center;
       color: #333;
-      font-size: 22px;
       margin-bottom: 30px;
+      font-size: 22px;
+    }
+
+    #commit_chart {
+      width: 100%;
+      height: 500px;
     }
 
     p {
@@ -90,6 +99,7 @@
   </style>
 </head>
 <body>
+
   <nav>
     <a href="/">Accueil</a>
     <a href="/contact/">Contact</a>
@@ -98,16 +108,16 @@
     <a href="/commits/">Commits</a>
   </nav>
 
-  <div class="content">
-    <div class="chart-container">
-      <h1>Nombre de commits par minute</h1>
+  <div class="container">
+    <div class="card">
+      <h2>Nombre de commits par minute</h2>
       {% if commits %}
-        <div id="commits_chart" style="width: 100%; height: 500px;"></div>
+        <div id="commit_chart"></div>
       {% else %}
         <p>Aucun commit trouvé ou erreur lors de l'appel à l'API GitHub.</p>
       {% endif %}
     </div>
   </div>
+
 </body>
 </html>
-
