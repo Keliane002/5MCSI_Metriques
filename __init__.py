@@ -63,27 +63,36 @@ def hello_world():
     return render_template('hello.html') #(COMMENTAIRE)
 
 @app.route('/commits/')
-def commits():
-    url = 'https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits'
-    response = requests.get(url)
-    
-    if response.status_code != 200:
-        return "Erreur lors de l'appel à l'API GitHub"
+def affichecommits():
+    url = "https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits"
 
-    data = response.json()
+    try:
+        response = urlopen(url)
+        raw_data = response.read()
+        data = json.loads(raw_data.decode("utf-8"))
+    except Exception as e:
+        return f"Erreur lors de l'appel à l'API GitHub : {e}"
+
     minutes_list = []
-
     for commit in data:
-        date_str = commit['commit']['author']['date']
-        date_obj = datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%SZ')
-        minutes_list.append(date_obj.minute)
+        try:
+            date_str = commit.get("commit", {}).get("author", {}).get("date")
+            if date_str:
+                date_obj = datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%SZ')
+                minutes_list.append(date_obj.strftime('%H:%M'))
+        except Exception as e:
+            print(f"Erreur: {e}")
 
-    # Compter le nombre de commits par minute
-    count = Counter(minutes_list)
-    minutes = list(count.keys())
-    commit_counts = list(count.values())
+    if not minutes_list:
+        return "Aucun commit valide trouvé."
 
-    return render_template('commits.html', minutes=minutes, commit_counts=commit_counts)
+    # 🧠 Tri chronologique
+    minute_counts = Counter(minutes_list)
+    sorted_items = sorted(minute_counts.items(), key=lambda x: datetime.strptime(x[0], "%H:%M"))
+    minutes = [item[0] for item in sorted_items]
+    counts = [item[1] for item in sorted_items]
+
+    return render_template("commits.html", minutes=minutes, counts=counts)
   
 if __name__ == "__main__":
   app.run(debug=True)
